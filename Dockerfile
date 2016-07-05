@@ -27,6 +27,7 @@ RUN set -ex \
     autoconf \
     automake \
     curl \
+    libreadline-dev \
   ' \
   && apt-get update \
   && apt-get install -y --no-install-recommends $buildDeps \
@@ -39,7 +40,7 @@ RUN set -ex \
   && cd /usr/src/ruby \
   && { echo '#define ENABLE_PATH_CHECK 0'; echo; cat file.c; } > file.c.new && mv file.c.new file.c \
   && autoconf \
-  && ./configure --disable-install-doc \
+  && ./configure --disable-install-doc --with-readline-dir=/usr/include/readline \
   && make -j"$(nproc)" \
   && make install \
   && apt-get purge -y --auto-remove $buildDeps \
